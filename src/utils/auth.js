@@ -72,6 +72,7 @@ function userToJSON(user) {
 
 function isPasswordAllowed(password) {
   return (
+    // too short
     password.length > 6 &&
     // non-alphanumeric
     /\W/.test(password) &&

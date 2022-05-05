@@ -1,28 +1,60 @@
 // Testing Pure Functions
-
+import cases from 'jest-in-case'
 import {isPasswordAllowed} from '../auth'
 
-describe('isPasswordAllowed only allows some passwords', () => {
-  const allowedPasswords = ['!aBc123']
-  const disallowedPasswords = [
-    'a2c!', // too short
-    '123456!', // no alphabet characters
-    'ABCdef!', // no numbers
-    'abc123!', // no uppercase letters
-    'ABC123!', // no lowercase letters
-    'ABCdef123', // no non-alphanumeric characters
-  ]
+cases(
+  'isPasswordAllowed: valid passwords',
+  (options) => {
+    expect(isPasswordAllowed(options.password)).toBe(true)
+  },
+  {
+    'valid password': {
+      password: '!aBc123',
+    },
+  },
+)
 
-  allowedPasswords.forEach(password => {
-    test(`allows ${password}`, () => {
-      expect(isPasswordAllowed(password)).toBe(true)
-    })
-  })
+cases(
+  'isPasswordAllowed: invalid passwords',
+  (options) => {
+    expect(isPasswordAllowed(options.password)).toBe(false)
+  },
+  {
+    'too short': {
+      password: 'A2c!',
+    },
+    'no alphabet characters || no letters': {
+      password: '123456!',
+    },
+    'no numbers': {
+      password: 'ABCdef!',
+    },
+    'no uppercase letters': {
+      password: 'abc123!',
+    },
+    'no lowercase letters': {
+      password: 'ABC123!',
+    },
+    'no special characters || no non-alphanumeric characters': {
+      password: 'ABCdef123',
+    },
+  },
+)
 
-  disallowedPasswords.forEach(password => {
-    test(`disallows ${password}`, () => {
-      expect(isPasswordAllowed(password)).toBe(false)
-    })
-  })
+// describe('isPasswordAllowed only allows some passwords', () => {
+//   const allowedPasswords = ['!aBc123']
+//   const disallowedPasswords = [
+//   ]
 
-});
+//   allowedPasswords.forEach((password) => {
+//     test(`allows ${password}`, () => {
+//       expect(isPasswordAllowed(password)).toBe(true)
+//     })
+//   })
+
+//   disallowedPasswords.forEach((password) => {
+//     test(`disallows ${password}`, () => {
+//       expect(isPasswordAllowed(password)).toBe(false)
+//     })
+//   })
+// })

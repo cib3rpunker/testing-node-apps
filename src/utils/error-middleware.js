@@ -5,6 +5,7 @@ function errorMiddleware(error, req, res, next) {
     next(error)
   } else if (error instanceof UnauthorizedError) {
     res.status(401)
+    // res.status(200)
     res.json({code: error.code, message: error.message})
   } else {
     res.status(500)
